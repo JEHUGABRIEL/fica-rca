@@ -13,10 +13,10 @@ export type EtatFormulaire = {
 
 const champ = (donnees: FormData, nom: string) => String(donnees.get(nom) ?? "").trim();
 
-/* Transmet une demande (contact ou ouverture de compte) au service
-   clientèle par e-mail, via l'API Resend. Variables d'environnement :
-   RESEND_API_KEY (obligatoire), CONTACT_EMAIL (destinataire, par défaut
-   l'adresse publique de la FICA) et CONTACT_FROM (expéditeur vérifié). */
+/* Transmet une demande (contact ou ouverture de compte) : enregistrée dans
+   la base (back-office, rubrique Demandes) et, si RESEND_API_KEY est
+   définie, copiée par e-mail à CONTACT_EMAIL (par défaut l'adresse publique
+   de la FICA) depuis CONTACT_FROM. */
 export async function envoyerDemande(_etat: EtatFormulaire, donnees: FormData): Promise<EtatFormulaire> {
   // Champ piège invisible : seuls les robots le remplissent.
   if (champ(donnees, "site_web")) return { statut: "succes" };
@@ -38,47 +38,65 @@ export async function envoyerDemande(_etat: EtatFormulaire, donnees: FormData): 
   if (message.length > 4000) erreurs.message = "Votre message est trop long.";
   if (Object.keys(erreurs).length) return { statut: "erreur", erreurs, message: "Merci de corriger les champs signalés." };
 
-  const cle = process.env.RESEND_API_KEY;
-  if (!cle) {
-    console.error("envoyerDemande : RESEND_API_KEY absente, la demande n'a pas pu être transmise.");
+  // 1. Enregistrement dans le back-office (rubrique Demandes).
+  let enregistree = false;
+  if (baseDisponible()) {
+    try {
+      await assurerSchema();
+      await sql()`insert into demandes (nature, nom, telephone, email, objet, profil, compte, message)
+                  values (${champ(donnees, "nature") === "ouverture" ? "ouverture" : "contact"}, ${nom}, ${telephone},
+                          ${email}, ${objet}, ${profil}, ${compte}, ${message.slice(0, 4000)})`;
+      enregistree = true;
+    } catch (erreur) {
+      console.error("envoyerDemande : enregistrement impossible", erreur);
+    }
+  }
+
+  // 2. Copie par e-mail au service clientèle, si Resend est configuré.
+  const envoyee = await envoyerParEmail({ nature, objet, nom, telephone, email, profil, compte, message });
+
+  if (!enregistree && !envoyee) {
     return {
       statut: "erreur",
-      message: `L'envoi en ligne est momentanément indisponible. Appelez-nous au ${site.telephone} ou écrivez-nous sur WhatsApp.`,
+      message: `Votre demande n'a pas pu être transmise. Réessayez ou appelez-nous au ${site.telephone}.`,
     };
   }
+  return { statut: "succes" };
+}
+
+async function envoyerParEmail(d: Record<"nature" | "objet" | "nom" | "telephone" | "email" | "profil" | "compte" | "message", string>) {
+  const cle = process.env.RESEND_API_KEY;
+  if (!cle) return false;
 
   const lignes = [
-    `${nature}${objet ? ` — ${objet}` : ""}`,
+    `${d.nature}${d.objet ? ` — ${d.objet}` : ""}`,
     "",
-    `Nom : ${nom}`,
-    `Téléphone : ${telephone}`,
-    email && `E-mail : ${email}`,
-    profil && `Profil : ${profil}`,
-    compte && `Compte souhaité : ${compte}`,
-    message && `\nMessage :\n${message}`,
+    `Nom : ${d.nom}`,
+    `Téléphone : ${d.telephone}`,
+    d.email && `E-mail : ${d.email}`,
+    d.profil && `Profil : ${d.profil}`,
+    d.compte && `Compte souhaité : ${d.compte}`,
+    d.message && `\nMessage :\n${d.message}`,
   ].filter(Boolean);
 
-  const reponse = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${cle}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.CONTACT_FROM ?? "Site FICA <site@fica-rca.com>",
-      to: [process.env.CONTACT_EMAIL ?? site.email],
-      reply_to: email || undefined,
-      subject: `[Site] ${nature} — ${nom}`,
-      text: lignes.join("\n"),
-    }),
-  });
-
-  if (!reponse.ok) {
-    console.error("envoyerDemande : échec Resend", reponse.status, await reponse.text());
-    return {
-      statut: "erreur",
-      message: `Votre demande n'a pas pu être envoyée. Réessayez ou appelez-nous au ${site.telephone}.`,
-    };
+  try {
+    const reponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${cle}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: process.env.CONTACT_FROM ?? "Site FICA <site@fica-rca.com>",
+        to: [process.env.CONTACT_EMAIL ?? site.email],
+        reply_to: d.email || undefined,
+        subject: `[Site] ${d.nature} — ${d.nom}`,
+        text: lignes.join("\n"),
+      }),
+    });
+    if (!reponse.ok) console.error("envoyerDemande : échec Resend", reponse.status, await reponse.text());
+    return reponse.ok;
+  } catch (erreur) {
+    console.error("envoyerDemande : Resend injoignable", erreur);
+    return false;
   }
-
-  return { statut: "succes" };
 }
 
 export type EtatAvis = {

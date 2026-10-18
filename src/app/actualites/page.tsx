@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BandeauPage } from "@/components/blocs";
-import { actualites, formaterDate } from "@/lib/institution";
+import { actualitesPubliees } from "@/lib/contenu";
+import { formaterDate } from "@/lib/institution";
 
 export const metadata: Metadata = {
   title: "Actualités",
@@ -10,8 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/actualites" },
 };
 
-export default function PageActualites() {
-  const triees = [...actualites].sort((a, b) => b.date.localeCompare(a.date));
+export default async function PageActualites() {
+  const triees = await actualitesPubliees();
   return (
     <>
       <BandeauPage titre="Actualités" introduction="Communiqués et activités de la Financière de Centrafrique." miettes={[{ libelle: "Actualités" }]} />

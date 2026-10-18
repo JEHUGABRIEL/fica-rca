@@ -112,7 +112,8 @@ export const partenaires: Partenaire[] = [
 
 export type Photo = { src: string; alt: string; largeur: number; hauteur: number };
 
-export const galerie: Photo[] = [
+/* Photos de départ de la médiathèque (copiées dans la base au premier lancement). */
+export const galerieInitiale: Photo[] = [
   { src: "/images/galerie/fica-13.jpg", alt: "L'équipe FICA lors du lancement de FICA MOBILE", largeur: 1080, hauteur: 877 },
   { src: "/images/galerie/fica-09.jpg", alt: "Les conseillères de la FICA en tenue officielle", largeur: 1080, hauteur: 810 },
   { src: "/images/galerie/fica-16.jpg", alt: "Un client reçu au guichet de l'agence de Bangui", largeur: 1280, hauteur: 720 },
@@ -132,20 +133,21 @@ export const galerie: Photo[] = [
   { src: "/images/galerie/fica-05.jpg", alt: "Collaboratrices de la FICA aux guichets", largeur: 810, hauteur: 1080 },
 ];
 
+/* Contenu de départ des actualités, copié une seule fois dans la base au
+   premier lancement ; ensuite, les actualités se gèrent dans le back-office.
+   Corps : paragraphes séparés par une ligne vide, lignes « - » pour les listes. */
 export type Actualite = {
   slug: string;
   titre: string;
   date: string;
-  categorie: "Communiqué" | "Activité" | "Prestations sociales";
+  categorie: string;
   resume: string;
   image: string;
-  corps: string[];
-  liste?: string[];
-  conclusion?: string[];
-  photos?: string[];
+  corps: string;
+  photos: string[];
 };
 
-export const actualites: Actualite[] = [
+export const actualitesInitiales: Actualite[] = [
   {
     slug: "lancement-de-fica-mobile",
     titre: "FICA MOBILE : la banque accessible à tous, même sans internet",
@@ -157,17 +159,10 @@ export const actualites: Actualite[] = [
     corps: [
       "La Financière de Centrafrique innove et rapproche ses services de sa clientèle avec le lancement officiel de FICA MOBILE.",
       "Pour la première fois en Centrafrique, une banque met à disposition une solution 100 % sans internet. Il suffit de souscrire puis de composer le #808# depuis n'importe quel téléphone.",
-    ],
-    liste: [
-      "Consulter votre solde en temps réel",
-      "Retracer vos 5 dernières opérations pour un meilleur suivi",
-      "Effectuer des transferts de compte à compte, instantanément",
-      "Faire des virements vers Orange Money en toute simplicité",
-    ],
-    conclusion: [
+      "- Consulter votre solde en temps réel\n- Retracer vos 5 dernières opérations pour un meilleur suivi\n- Effectuer des transferts de compte à compte, instantanément\n- Faire des virements vers Orange Money en toute simplicité",
       "Avec ce service USSD, la FICA réaffirme son engagement : rendre la banque accessible, rapide et disponible pour tous, partout en RCA, sans contrainte de connexion.",
       "Pour en profiter, souscrivez et composez dès maintenant le #808#.",
-    ],
+    ].join("\n\n"),
     photos: ["/images/actualites/fica-mobile-lancement.jpg", "/images/actualites/guichet-fica-mobile.jpg"],
   },
   {
@@ -177,7 +172,7 @@ export const actualites: Actualite[] = [
     categorie: "Activité",
     resume: "Les collaborateurs de la Financière de Centrafrique ont pris part au défilé de la Fête du Travail à Bangui.",
     image: "/images/actualites/defile-2026-1.jpg",
-    corps: ["Le passage de la FICA lors du défilé du 1er mai 2026, Fête du Travail, à Bangui."],
+    corps: "Le passage de la FICA lors du défilé du 1er mai 2026, Fête du Travail, à Bangui.",
     photos: ["/images/actualites/defile-2026-1.jpg", "/images/actualites/defile-2026-2.jpg"],
   },
   {
@@ -187,12 +182,25 @@ export const actualites: Actualite[] = [
     categorie: "Prestations sociales",
     resume: "En partenariat avec la CNSS, la FICA assure le paiement des allocations familiales du premier trimestre 2026.",
     image: "/images/actualites/allocations-2026-1.jpg",
-    corps: [
+    corps:
       "En partenariat avec la Caisse nationale de sécurité sociale, la FICA assure le paiement des allocations familiales du premier trimestre 2026, selon le calendrier communiqué aux bénéficiaires.",
-    ],
     photos: ["/images/actualites/allocations-2026-1.jpg", "/images/actualites/allocations-2026-2.jpg"],
   },
 ];
+
+/** Découpe le corps d'une actualité en paragraphes et listes. */
+export function blocsDuCorps(corps: string) {
+  return corps
+    .split(/\n\s*\n/)
+    .map((bloc) => bloc.trim())
+    .filter(Boolean)
+    .map((bloc) => {
+      const lignes = bloc.split("\n").map((l) => l.trim());
+      return lignes.every((l) => l.startsWith("- "))
+        ? { type: "liste" as const, elements: lignes.map((l) => l.slice(2)) }
+        : { type: "paragraphe" as const, texte: lignes.join(" ") };
+    });
+}
 
 export function formaterDate(iso: string) {
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(

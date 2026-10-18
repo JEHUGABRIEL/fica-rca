@@ -3,15 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FilAriane } from "@/components/blocs";
-import { actualites, formaterDate } from "@/lib/institution";
+import { actualiteParSlug, actualitesPubliees } from "@/lib/contenu";
+import { blocsDuCorps, formaterDate } from "@/lib/institution";
 
-export function generateStaticParams() {
-  return actualites.map((a) => ({ slug: a.slug }));
+export async function generateStaticParams() {
+  const actualites = await actualitesPubliees();
+  // Cache Components exige au moins un paramètre ; un slug inconnu mène à notFound().
+  return actualites.length ? actualites.map((a) => ({ slug: a.slug })) : [{ slug: "aucune" }];
 }
 
 export async function generateMetadata({ params }: PageProps<"/actualites/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const a = actualites.find((x) => x.slug === slug);
+  const a = await actualiteParSlug(slug);
   if (!a) return {};
   return {
     title: a.titre,
@@ -23,6 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/actualites/[slug]
 
 export default async function PageActualite({ params }: PageProps<"/actualites/[slug]">) {
   const { slug } = await params;
+  const actualites = await actualitesPubliees();
   const a = actualites.find((x) => x.slug === slug);
   if (!a) notFound();
   const autres = actualites.filter((x) => x.slug !== a.slug).slice(0, 3);
@@ -37,27 +41,27 @@ export default async function PageActualite({ params }: PageProps<"/actualites/[
         <h1 className="mt-3 text-3xl md:text-[2.4rem]">{a.titre}</h1>
         <p className="mt-5 text-xl leading-relaxed text-gris">{a.resume}</p>
 
+        {a.image && (
         <div className="relative mt-10 aspect-[2/1] overflow-hidden bg-gris-clair">
           <Image src={a.image} alt="" fill priority sizes="(min-width: 768px) 48rem, 100vw" className="object-cover" />
         </div>
+        )}
 
         <div className="texte-courant mt-10">
-          {a.corps.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-          {a.liste && (
-            <ul className="list-disc space-y-1.5 pl-6 marker:text-bleu">
-              {a.liste.map((l) => (
-                <li key={l}>{l}</li>
-              ))}
-            </ul>
+          {blocsDuCorps(a.corps).map((bloc, i) =>
+            bloc.type === "liste" ? (
+              <ul key={i} className="list-disc space-y-1.5 pl-6 marker:text-bleu">
+                {bloc.elements.map((l) => (
+                  <li key={l}>{l}</li>
+                ))}
+              </ul>
+            ) : (
+              <p key={i}>{bloc.texte}</p>
+            ),
           )}
-          {a.conclusion?.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
         </div>
 
-        {a.photos && (
+        {a.photos.length > 0 && (
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {a.photos.map((src) => (
               <div key={src} className="relative aspect-[4/3] overflow-hidden bg-gris-clair">

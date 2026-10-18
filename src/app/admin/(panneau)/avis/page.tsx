@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import { exigerAdmin } from "@/lib/auth";
 import { assurerSchema, baseDisponible, sql } from "@/lib/db";
 import { formaterDate } from "@/lib/institution";
-import { publierAvis, refuserAvis, remettreEnAttente, seDeconnecter, supprimerAvis } from "./actions";
+import { BoutonConfirmer } from "@/components/admin/bouton-confirmer";
+import { publierAvis, refuserAvis, remettreEnAttente, supprimerAvis } from "../../actions";
+import { Chargement, EnTetePage } from "../en-tete-page";
 
 export const metadata: Metadata = { title: "Avis clients" };
 
@@ -77,7 +78,7 @@ async function ListeModeration() {
                       {statut === "refuse" && (
                         <BoutonAction action={remettreEnAttente.bind(null, a.id)} libelle="Remettre en attente" style="bouton-secondaire" />
                       )}
-                      <BoutonAction action={supprimerAvis.bind(null, a.id)} libelle="Supprimer" style="text-rouge hover:underline" />
+                      <BoutonConfirmer action={supprimerAvis.bind(null, a.id)} />
                     </div>
                   </li>
                 ))}
@@ -90,28 +91,17 @@ async function ListeModeration() {
   );
 }
 
-export default function PageAdmin() {
+export default function PageAvisAdmin() {
   return (
-    <div className="conteneur max-w-5xl py-10">
-      <header className="flex items-center justify-between gap-4 border-b border-filet pb-5">
-        <div>
-          <p className="text-sm text-gris">Back-office FICA</p>
-          <h1 className="text-2xl">Modération des avis clients</h1>
-        </div>
-        <div className="flex items-center gap-4 text-sm">
-          <Link href="/avis" className="lien-fleche" target="_blank">
-            Voir la page publique
-          </Link>
-          <form action={seDeconnecter}>
-            <button type="submit" className="bouton bouton-secondaire !py-1.5 text-sm">
-              Se déconnecter
-            </button>
-          </form>
-        </div>
-      </header>
-      <Suspense fallback={<p className="mt-8 text-gris">Chargement…</p>}>
+    <>
+      <EnTetePage
+        titre="Avis clients"
+        description="Les avis déposés sur le site restent invisibles jusqu'à leur publication."
+        action={{ libelle: "Voir la page publique", href: "/avis" }}
+      />
+      <Suspense fallback={<Chargement />}>
         <ListeModeration />
       </Suspense>
-    </div>
+    </>
   );
 }

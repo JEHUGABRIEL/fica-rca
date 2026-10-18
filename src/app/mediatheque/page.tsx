@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BandeauPage } from "@/components/blocs";
 import { GaleriePhotos } from "@/components/galerie-photos";
-import { galerie } from "@/lib/institution";
+import { photosGalerie } from "@/lib/contenu";
 
 export const metadata: Metadata = {
   title: "Médiathèque",
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/mediatheque" },
 };
 
-export default function PageMediatheque() {
+export default async function PageMediatheque() {
+  const galerie = await photosGalerie();
   return (
     <>
       <BandeauPage

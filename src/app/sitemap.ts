@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { actualites } from "@/lib/institution";
+import { actualitesPubliees } from "@/lib/contenu";
 import { univers } from "@/lib/services";
 import { site } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const actualites = await actualitesPubliees();
   const pages = ["", "/particuliers", "/professionnels", "/institutions", "/services", "/fica-mobile", "/ouverture-de-compte", "/la-fica", "/la-fica/gouvernance", "/actualites", "/mediatheque", "/avis", "/contact"];
   return [
     ...pages.map((p) => ({ url: `${site.url}${p}`, priority: p === "" ? 1 : 0.8 })),
