@@ -37,7 +37,7 @@ export default async function Accueil() {
       {/* --- Accès rapides --- */}
       <nav aria-label="Accès rapides" className="relative z-10 bg-gris-clair lg:bg-transparent">
         <div className="conteneur py-6 lg:-mt-16 lg:py-0">
-          <ul className="grid grid-cols-2 border-t-[3px] border-rouge bg-white shadow-[0_18px_40px_-24px_rgb(11_33_73/0.45)] lg:grid-cols-4">
+          <ul className="grid grid-cols-2 bg-white shadow-[0_18px_40px_-24px_rgb(11_33_73/0.45)] lg:grid-cols-4">
             {accesRapides.map((a, i) => (
               <li
                 key={a.href}
