@@ -82,7 +82,7 @@ export function CarrouselHero({ diapositives }: { diapositives: Diapositive[] })
       ))}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-marine via-marine/85 to-marine/10" />
 
-      <div className="conteneur grid min-h-[32rem] md:min-h-[36rem]">
+      <div className="conteneur grid min-h-[32rem] md:min-h-[36rem] lg:min-h-[40rem]">
         {diapositives.map((d, i) => (
           <div
             key={d.titre}
@@ -91,7 +91,7 @@ export function CarrouselHero({ diapositives }: { diapositives: Diapositive[] })
             aria-label={`${i + 1} sur ${total} : ${d.titre}`}
             aria-hidden={i !== active}
             inert={i !== active}
-            className={`col-start-1 row-start-1 flex flex-col justify-center pb-28 pt-16 transition-all duration-700 ease-out ${
+            className={`col-start-1 row-start-1 flex flex-col justify-center pb-28 pt-16 lg:pb-40 transition-all duration-700 ease-out ${
               i === active ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
             }`}
           >
@@ -110,7 +110,7 @@ export function CarrouselHero({ diapositives }: { diapositives: Diapositive[] })
 
       {/* Commandes */}
       <div className="absolute inset-x-0 bottom-0">
-        <div className="conteneur flex items-center gap-4 pb-8">
+        <div className="conteneur flex items-center gap-4 pb-8 lg:pb-24">
           <div className="flex gap-1">
             <button
               type="button"

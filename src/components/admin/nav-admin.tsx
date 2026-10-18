@@ -12,8 +12,12 @@ const liens = [
   { libelle: "Demandes reçues", href: "/admin/demandes" },
 ];
 
-export function NavAdmin() {
-  const pathname = usePathname();
+/* Lit l'adresse courante pour surligner le lien actif. */
+export function NavAdminActive() {
+  return <NavAdmin pathname={usePathname()} />;
+}
+
+export function NavAdmin({ pathname }: { pathname: string }) {
   return (
     <nav aria-label="Back-office">
       <ul className="flex gap-1 overflow-x-auto lg:flex-col">

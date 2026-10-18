@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileCheck2, HandCoins, Headset, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { AvisClients } from "@/components/avis-clients";
@@ -11,10 +11,10 @@ import { produitsDeRubrique, profils } from "@/lib/profils";
 import { site } from "@/lib/site";
 
 const accesRapides = [
-  { titre: "Ouvrir un compte", texte: "Pièces à fournir et demande en ligne", href: "/ouverture-de-compte" },
-  { titre: "Demander un crédit", texte: "Découverts, crédits amortissables, PME", href: "/services/credits" },
-  { titre: "Obtenir une attestation", texte: "Solde, solvabilité, marchés publics, visa", href: "/services/attestations" },
-  { titre: "Nous contacter", texte: `${site.telephone} · WhatsApp`, href: "/contact" },
+  { icone: UserPlus, titre: "Ouvrir un compte", texte: "Comparatif des comptes, pièces à fournir et demande en ligne.", action: "Commencer", href: "/ouverture-de-compte" },
+  { icone: HandCoins, titre: "Demander un crédit", texte: "Découverts, crédit scolaire, crédits amortissables et PME.", action: "Voir les crédits", href: "/services/credits" },
+  { icone: FileCheck2, titre: "Obtenir une attestation", texte: "Solde, solvabilité, marchés publics, visa : délivrées rapidement.", action: "Faire une demande", href: "/services/attestations" },
+  { icone: Headset, titre: "Parler à un conseiller", texte: `Par téléphone au ${site.telephone} ou sur WhatsApp.`, action: "Nous contacter", href: "/contact" },
 ];
 
 const enBref = [
@@ -35,20 +35,33 @@ export default async function Accueil() {
       <CarrouselHero diapositives={diapositives} />
 
       {/* --- Accès rapides --- */}
-      <nav aria-label="Accès rapides" className="border-b border-filet">
-        <ul className="conteneur grid sm:grid-cols-2 lg:grid-cols-4">
-          {accesRapides.map((a, i) => (
-            <li key={a.href} className={`border-filet ${i > 0 ? "border-t sm:border-t-0" : ""} ${i % 2 === 1 ? "sm:border-l" : ""} ${i >= 2 ? "sm:border-t lg:border-t-0" : ""} ${i === 2 ? "lg:border-l" : ""}`}>
-              <Link href={a.href} className="group flex items-center justify-between gap-4 py-6 sm:px-6 lg:first:pl-0">
-                <span>
-                  <span className="block font-semibold text-marine group-hover:text-bleu">{a.titre}</span>
-                  <span className="mt-0.5 block text-sm text-gris">{a.texte}</span>
-                </span>
-                <ArrowRight className="size-5 shrink-0 text-bleu transition-transform group-hover:translate-x-1" aria-hidden />
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <nav aria-label="Accès rapides" className="relative z-10 bg-gris-clair lg:bg-transparent">
+        <div className="conteneur py-6 lg:-mt-16 lg:py-0">
+          <ul className="grid grid-cols-2 border-t-[3px] border-rouge bg-white shadow-[0_18px_40px_-24px_rgb(11_33_73/0.45)] lg:grid-cols-4">
+            {accesRapides.map((a, i) => (
+              <li
+                key={a.href}
+                className={`border-filet ${i % 2 === 1 ? "border-l" : ""} ${i >= 2 ? "border-t lg:border-t-0" : ""} ${i === 2 ? "lg:border-l" : ""}`}
+              >
+                <Link
+                  href={a.href}
+                  className="group relative flex h-full flex-col p-4 transition-colors hover:bg-gris-clair sm:p-6 lg:p-7"
+                >
+                  <span className="grid size-10 place-items-center border border-filet text-bleu transition-colors group-hover:border-bleu group-hover:bg-bleu group-hover:text-white sm:size-11">
+                    <a.icone className="size-5" strokeWidth={1.75} aria-hidden />
+                  </span>
+                  <span className="mt-4 block font-semibold leading-snug text-marine sm:text-[1.05rem]">{a.titre}</span>
+                  <span className="mt-1.5 hidden flex-1 text-sm leading-relaxed text-gris sm:block">{a.texte}</span>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-bleu">
+                    {a.action}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </span>
+                  <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-bleu transition-transform duration-300 group-hover:scale-x-100" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
 
       {/* --- Offres par profil --- */}

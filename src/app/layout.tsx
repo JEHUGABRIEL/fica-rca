@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
-import { BoutonsFlottants } from "@/components/boutons-flottants";
-import { EnTete } from "@/components/en-tete";
-import { HorsAdmin } from "@/components/hors-admin";
-import { PiedDePage } from "@/components/pied-de-page";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -59,16 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Aller au contenu
         </a>
-        <HorsAdmin>
-          <EnTete />
-        </HorsAdmin>
-        <main id="contenu" className="flex-1">
-          {children}
-        </main>
-        <HorsAdmin>
-          <PiedDePage />
-          <BoutonsFlottants />
-        </HorsAdmin>
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees) }}

@@ -1,6 +1,6 @@
 "use server";
 
-import { updateTag } from "next/cache";
+import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { exigerAdmin, fermerSession, motDePasseValide, ouvrirSession } from "@/lib/auth";
 import { TAG_AVIS } from "@/lib/avis";
@@ -284,12 +284,16 @@ export async function supprimerPhoto(id: number) {
 /* Demandes reçues                                                     */
 /* ------------------------------------------------------------------ */
 
+// Les demandes ne sont lues que par le back-office (aucun cache public à vider) :
+// on rafraîchit simplement la page courante.
 export async function basculerDemande(id: number) {
   const db = await pret();
   await db`update demandes set traitee = not traitee where id = ${id}`;
+  refresh();
 }
 
 export async function supprimerDemande(id: number) {
   const db = await pret();
   await db`delete from demandes where id = ${id}`;
+  refresh();
 }

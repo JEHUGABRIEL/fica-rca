@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NavAdmin } from "@/components/admin/nav-admin";
+import { Suspense } from "react";
+import { NavAdmin, NavAdminActive } from "@/components/admin/nav-admin";
 import { seDeconnecter } from "../actions";
 
 /* Habillage du back-office. Chaque page vérifie elle-même la session
@@ -18,7 +19,9 @@ export default function LayoutPanneau({ children }: { children: React.ReactNode 
             </span>
           </Link>
         </div>
-        <NavAdmin />
+        <Suspense fallback={<NavAdmin pathname="" />}>
+          <NavAdminActive />
+        </Suspense>
         <div className="flex gap-4 px-4 py-5 text-sm lg:absolute lg:bottom-0 lg:flex-col lg:gap-2">
           <Link href="/" target="_blank" className="text-white/70 hover:text-white hover:underline">
             Voir le site

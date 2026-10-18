@@ -1,5 +1,6 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
+import { connection } from "next/server";
 import type { Diapositive } from "@/components/carrousel-hero";
 import { assurerSchema, baseDisponible, sql } from "./db";
 import { diapositivesInitiales } from "./diapositives-initiales";
@@ -65,8 +66,24 @@ export async function actualitesPubliees(): Promise<Actualite[]> {
   }
 }
 
+/**
+ * Actualité par adresse. Une actualité publiée après le build n'est pas
+ * dans la liste figée de la page statique tant que celle-ci n'est pas
+ * régénérée : avant de conclure à une 404, on interroge directement la base
+ * (à la requête, hors cache).
+ */
 export async function actualiteParSlug(slug: string) {
-  return (await actualitesPubliees()).find((a) => a.slug === slug);
+  const enCache = (await actualitesPubliees()).find((a) => a.slug === slug);
+  if (enCache || !baseDisponible()) return enCache;
+  await connection();
+  try {
+    await assurerSchema();
+    const [ligne] = await sql()`select * from actualites where slug = ${slug} and publiee`;
+    return ligne ? versActualite(ligne) : undefined;
+  } catch (erreur) {
+    console.error("[contenu] actualité :", erreur);
+    return undefined;
+  }
 }
 
 export async function photosGalerie(): Promise<Photo[]> {

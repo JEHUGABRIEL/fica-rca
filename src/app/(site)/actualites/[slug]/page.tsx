@@ -26,8 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/actualites/[slug]
 
 export default async function PageActualite({ params }: PageProps<"/actualites/[slug]">) {
   const { slug } = await params;
-  const actualites = await actualitesPubliees();
-  const a = actualites.find((x) => x.slug === slug);
+  const [a, actualites] = await Promise.all([actualiteParSlug(slug), actualitesPubliees()]);
   if (!a) notFound();
   const autres = actualites.filter((x) => x.slug !== a.slug).slice(0, 3);
 
