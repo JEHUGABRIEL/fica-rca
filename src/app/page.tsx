@@ -3,10 +3,59 @@ import Image from "next/image";
 import Link from "next/link";
 import { AvisClients } from "@/components/avis-clients";
 import { BandeauContact } from "@/components/blocs";
+import { CarrouselHero, type Diapositive } from "@/components/carrousel-hero";
 import { GrillePartenaires } from "@/components/partenaires";
 import { actualites, formaterDate, motDuDirecteur } from "@/lib/institution";
 import { produitsDeRubrique, profils } from "@/lib/profils";
 import { site } from "@/lib/site";
+
+const diapositives: Diapositive[] = [
+  {
+    image: "/images/galerie/fica-09.jpg",
+    alt: "Les conseillères de la FICA à l'agence de Bangui",
+    cadrage: "70% 30%",
+    rubrique: "La FICA",
+    titre: "Sécurité et disponibilité de vos dépôts",
+    texte: "Établissement de microfinance agréé par la COBAC, au service des particuliers, des entreprises et des institutions centrafricaines depuis 2020.",
+    action: { libelle: "Ouvrir un compte", href: "/ouverture-de-compte" },
+  },
+  {
+    image: "/images/galerie/fica-13.jpg",
+    alt: "L'équipe FICA lors du lancement de FICA MOBILE",
+    cadrage: "60% 35%",
+    rubrique: "FICA MOBILE",
+    titre: "Votre compte, sans connexion internet",
+    texte: `Solde, dernières opérations, transferts et virements vers Orange Money depuis n'importe quel téléphone : composez le ${site.codeUssd}.`,
+    action: { libelle: "Découvrir FICA MOBILE", href: "/fica-mobile" },
+  },
+  {
+    image: "/images/galerie/fica-16.jpg",
+    alt: "Un client reçu au guichet de l'agence de Bangui",
+    cadrage: "65% 40%",
+    rubrique: "Particuliers",
+    titre: "Financer la rentrée, un projet ou un imprévu",
+    texte: "Découvert ponctuel, crédit scolaire, crédits amortissables pour les salariés et les travailleurs indépendants.",
+    action: { libelle: "Voir les crédits", href: "/services/credits" },
+  },
+  {
+    image: "/images/galerie/fica-08.jpg",
+    alt: "Des clients accueillis à l'agence de la FICA",
+    cadrage: "60% 40%",
+    rubrique: "Professionnels",
+    titre: "Un partenaire financier pour les entreprises",
+    texte: "Comptes courants, financement de marchés, cautions et attestations exigées pour les marchés publics.",
+    action: { libelle: "Offre professionnels", href: "/professionnels" },
+  },
+  {
+    image: "/images/actualites/allocations-2026-1.jpg",
+    alt: "Paiement des allocations familiales dans le hall de l'agence",
+    cadrage: "60% 40%",
+    rubrique: "Institutions",
+    titre: "Paiement des pensions et des allocations familiales",
+    texte: "En partenariat avec la CNSS, la FICA assure le paiement des prestations sociales selon un calendrier communiqué à l'avance.",
+    action: { libelle: "Offre institutions", href: "/institutions" },
+  },
+];
 
 const accesRapides = [
   { titre: "Ouvrir un compte", texte: "Pièces à fournir et demande en ligne", href: "/ouverture-de-compte" },
@@ -28,34 +77,8 @@ export default function Accueil() {
 
   return (
     <>
-      {/* --- Visuel principal --- */}
-      <section className="relative isolate bg-marine">
-        <Image
-          src="/images/galerie/fica-09.jpg"
-          alt="Les conseillères de la FICA à l'agence de Bangui"
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10 object-cover object-[70%_30%]"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-marine via-marine/85 to-marine/10" />
-        <div className="conteneur flex min-h-[30rem] flex-col justify-center py-16 md:min-h-[34rem]">
-          <p className="text-sm font-medium uppercase tracking-[0.12em] text-white/70">Financière de Centrafrique</p>
-          <h1 className="mt-4 max-w-xl text-4xl text-white md:text-5xl">Sécurité et disponibilité de vos dépôts</h1>
-          <p className="mt-5 max-w-lg text-lg leading-relaxed text-white/80">
-            Établissement de microfinance agréé par la COBAC, au service des particuliers, des entreprises et des
-            institutions centrafricaines depuis 2020.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href="/ouverture-de-compte" className="bouton bouton-principal">
-              Ouvrir un compte
-            </Link>
-            <Link href="/fica-mobile" className="bouton bouton-blanc">
-              FICA MOBILE : composez le {site.codeUssd}
-            </Link>
-          </div>
-        </div>
-      </section>
+      <h1 className="sr-only">Financière de Centrafrique (FICA S.A.) : sécurité et disponibilité de vos dépôts</h1>
+      <CarrouselHero diapositives={diapositives} />
 
       {/* --- Accès rapides --- */}
       <nav aria-label="Accès rapides" className="border-b border-filet">

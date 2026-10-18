@@ -4,7 +4,7 @@ import { univers } from "@/lib/services";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/particuliers", "/professionnels", "/institutions", "/services", "/fica-mobile", "/ouverture-de-compte", "/la-fica", "/la-fica/gouvernance", "/actualites", "/mediatheque", "/contact"];
+  const pages = ["", "/particuliers", "/professionnels", "/institutions", "/services", "/fica-mobile", "/ouverture-de-compte", "/la-fica", "/la-fica/gouvernance", "/actualites", "/mediatheque", "/avis", "/contact"];
   return [
     ...pages.map((p) => ({ url: `${site.url}${p}`, priority: p === "" ? 1 : 0.8 })),
     ...univers.flatMap((u) => [

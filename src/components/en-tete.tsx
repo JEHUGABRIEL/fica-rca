@@ -42,6 +42,7 @@ const menus: Menu[] = [
         liens: [
           { libelle: "Actualités", href: "/actualites" },
           { libelle: "Médiathèque", href: "/mediatheque" },
+          { libelle: "Avis clients", href: "/avis" },
           { libelle: "Contact et accès", href: "/contact" },
         ],
       },

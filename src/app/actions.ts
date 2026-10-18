@@ -1,5 +1,8 @@
 "use server";
 
+import { createHash } from "node:crypto";
+import { headers } from "next/headers";
+import { assurerSchema, baseDisponible, sql } from "@/lib/db";
 import { site } from "@/lib/site";
 
 export type EtatFormulaire = {
@@ -76,4 +79,57 @@ export async function envoyerDemande(_etat: EtatFormulaire, donnees: FormData): 
   }
 
   return { statut: "succes" };
+}
+
+export type EtatAvis = {
+  statut: "inactif" | "succes" | "erreur";
+  message?: string;
+  erreurs?: Partial<Record<"nom" | "texte" | "accord", string>>;
+};
+
+const AVIS_PAR_JOUR = 3;
+
+/* Dépôt d'un avis client : enregistré « en attente », publié seulement après
+   validation dans le back-office. L'adresse IP n'est pas conservée, seule
+   une empreinte salée sert à limiter les envois répétés. */
+export async function deposerAvis(_etat: EtatAvis, donnees: FormData): Promise<EtatAvis> {
+  if (champ(donnees, "site_web")) return { statut: "succes" };
+
+  const nom = champ(donnees, "nom").slice(0, 80);
+  const profil = champ(donnees, "profil").slice(0, 120);
+  const produit = champ(donnees, "produit").slice(0, 80);
+  const texte = champ(donnees, "texte");
+  const accord = donnees.get("accord") === "on";
+
+  const erreurs: EtatAvis["erreurs"] = {};
+  if (nom.length < 2) erreurs.nom = "Indiquez le nom à afficher avec votre avis.";
+  if (texte.length < 20) erreurs.texte = "Votre avis doit compter au moins 20 caractères.";
+  if (texte.length > 1500) erreurs.texte = "Votre avis ne doit pas dépasser 1 500 caractères.";
+  if (!accord) erreurs.accord = "Votre accord est nécessaire pour publier votre avis.";
+  if (Object.keys(erreurs).length) return { statut: "erreur", erreurs, message: "Merci de corriger les champs signalés." };
+
+  if (!baseDisponible()) {
+    return { statut: "erreur", message: "Le dépôt d'avis est momentanément indisponible. Merci de réessayer plus tard." };
+  }
+
+  const ip = ((await headers()).get("x-forwarded-for") ?? "").split(",")[0].trim();
+  const empreinte = createHash("sha256")
+    .update(`${process.env.ADMIN_SESSION_SECRET ?? ""}:${ip}`)
+    .digest("hex")
+    .slice(0, 32);
+
+  try {
+    await assurerSchema();
+    const [{ n }] = await sql()`select count(*)::int as n from avis
+                                 where empreinte = ${empreinte} and cree_le > now() - interval '1 day'`;
+    if (ip && Number(n) >= AVIS_PAR_JOUR) {
+      return { statut: "erreur", message: "Vous avez déjà déposé plusieurs avis aujourd'hui. Merci de réessayer demain." };
+    }
+    await sql()`insert into avis (nom, profil, produit, texte, empreinte)
+                values (${nom}, ${profil}, ${produit}, ${texte}, ${empreinte})`;
+    return { statut: "succes" };
+  } catch (erreur) {
+    console.error("[avis] enregistrement impossible :", erreur);
+    return { statut: "erreur", message: "Votre avis n'a pas pu être enregistré. Merci de réessayer." };
+  }
 }

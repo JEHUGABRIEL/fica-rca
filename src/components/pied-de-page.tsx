@@ -21,6 +21,7 @@ const colonnes = [
       { libelle: "Gouvernance", href: "/la-fica/gouvernance" },
       { libelle: "Actualités", href: "/actualites" },
       { libelle: "Médiathèque", href: "/mediatheque" },
+      { libelle: "Avis clients", href: "/avis" },
     ],
   },
 ];

@@ -1,10 +1,28 @@
 import Link from "next/link";
-import { avis } from "@/lib/avis";
-import { site } from "@/lib/site";
+import { avisPublies, type AvisPublie } from "@/lib/avis";
+import { formaterDate } from "@/lib/institution";
 
-const lienAvis = `/contact?objet=${encodeURIComponent("Avis client")}`;
+export function CarteAvis({ avis }: { avis: AvisPublie }) {
+  return (
+    <figure className="flex h-full flex-col">
+      <blockquote className="flex-1 text-[1.05rem] leading-relaxed text-encre">« {avis.texte} »</blockquote>
+      <figcaption className="mt-5 text-sm">
+        <span className="block font-semibold text-marine">{avis.nom}</span>
+        <span className="text-gris">
+          {[avis.profil, avis.produit].filter(Boolean).join(" · ")}
+          {(avis.profil || avis.produit) && " · "}
+          <time dateTime={avis.date}>{formaterDate(avis.date)}</time>
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
 
-export function AvisClients() {
+/* Section de l'accueil : les trois derniers avis publiés. */
+export async function AvisClients() {
+  const avis = await avisPublies();
+  const derniers = avis.slice(0, 3);
+
   return (
     <section aria-labelledby="titre-avis" className="border-t border-filet">
       <div className="conteneur py-16 md:py-20">
@@ -12,41 +30,36 @@ export function AvisClients() {
           <h2 id="titre-avis" className="text-2xl md:text-3xl">
             Avis de nos clients
           </h2>
-          <Link href={lienAvis} className="lien-fleche text-sm">
-            Donner mon avis
-          </Link>
+          <div className="flex gap-6 text-sm">
+            {avis.length > 3 && (
+              <Link href="/avis" className="lien-fleche">
+                Lire les {avis.length} avis
+              </Link>
+            )}
+            <Link href="/avis#donner-mon-avis" className="lien-fleche">
+              Donner mon avis
+            </Link>
+          </div>
         </div>
 
-        {avis.length > 0 ? (
-          <ul className="mt-10 grid gap-x-10 border-t border-marine md:grid-cols-3">
-            {avis.map((a) => (
-              <li key={a.nom} className="border-b border-filet py-8">
-                <figure>
-                  <blockquote className="text-[1.05rem] leading-relaxed text-encre">« {a.texte} »</blockquote>
-                  <figcaption className="mt-5 text-sm">
-                    <span className="block font-semibold text-marine">{a.nom}</span>
-                    <span className="text-gris">
-                      {a.profil}
-                      {a.produit && ` · ${a.produit}`}
-                    </span>
-                  </figcaption>
-                </figure>
+        {derniers.length > 0 ? (
+          <ul className="mt-8 grid gap-x-10 border-t border-marine md:grid-cols-3">
+            {derniers.map((a) => (
+              <li key={a.id} className="border-b border-filet py-8">
+                <CarteAvis avis={a} />
               </li>
             ))}
           </ul>
         ) : (
           <div className="mt-8 grid gap-8 border-t border-marine pt-8 md:grid-cols-[1.5fr_1fr] md:items-center">
             <p className="max-w-2xl text-lg leading-relaxed text-gris">
-              Vous êtes client de la FICA ? Racontez-nous votre expérience à l&apos;agence, avec FICA MOBILE ou nos
-              services de paiement. Avec votre accord, votre témoignage pourra être publié sur cette page.
+              Vous êtes client de la FICA ? Racontez votre expérience à l&apos;agence, avec FICA MOBILE ou nos services
+              de paiement. Les avis sont publiés sur cette page après vérification.
             </p>
-            <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
-              <Link href={lienAvis} className="bouton bouton-secondaire">
+            <div className="md:text-right">
+              <Link href="/avis#donner-mon-avis" className="bouton bouton-secondaire">
                 Donner mon avis
               </Link>
-              <a href={site.reseaux.facebook} target="_blank" rel="noopener noreferrer" className="bouton bouton-secondaire">
-                Nous suivre sur Facebook
-              </a>
             </div>
           </div>
         )}
