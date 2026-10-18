@@ -17,12 +17,12 @@ export const motDuDirecteur = {
 };
 
 export const valeurs = [
-  { titre: "Intégrité", texte: "Honnêteté et transparence guident chacune de nos décisions et chacune de nos relations." },
-  { titre: "Excellence dans le service", texte: "Un accueil attentif, des réponses rapides et un suivi rigoureux de chaque client." },
-  { titre: "Engagement mutuel", texte: "Une relation de confiance durable entre la FICA, ses clients, ses équipes et ses actionnaires." },
-  { titre: "Force de la diversité", texte: "La diversité culturelle de nos équipes et de nos clients est une richesse que nous cultivons." },
-  { titre: "Passion d'entreprendre", texte: "Nous partageons l'énergie des entrepreneurs centrafricains que nous accompagnons." },
-  { titre: "Indépendance", texte: "Une gouvernance indépendante, au service de l'intérêt de nos déposants." },
+  "Intégrité",
+  "Excellence dans le service au client",
+  "Engagement mutuel",
+  "Force issue de la diversité culturelle",
+  "Passion d'entreprendre",
+  "Indépendance",
 ];
 
 /* Jalons vérifiés sur le site d'origine (agrément, communiqués). */
@@ -30,13 +30,6 @@ export const jalons = [
   { annee: "2020", titre: "Agrément COBAC", texte: "Le 20 juillet 2020, la FICA obtient son agrément officiel après avis conforme de la Commission bancaire de l'Afrique centrale." },
   { annee: "2026", titre: "Lancement de FICA MOBILE", texte: "Première solution bancaire 100 % sans internet en Centrafrique, accessible au #808# depuis n'importe quel téléphone." },
   { annee: "2026", titre: "Six ans au service des Centrafricains", texte: "La FICA célèbre six années d'engagement pour la sécurité et la disponibilité des dépôts de ses clients." },
-];
-
-export const chiffresCles = [
-  { valeur: "2020", libelle: "Agréée par la COBAC" },
-  { valeur: "500 M", libelle: "FCFA de capital social" },
-  { valeur: "50+", libelle: "Partenaires institutionnels" },
-  { valeur: "#808#", libelle: "La banque sans internet" },
 ];
 
 export const engagements = [
@@ -160,7 +153,7 @@ export const actualites: Actualite[] = [
     categorie: "Communiqué",
     resume:
       "La Financière de Centrafrique lance FICA MOBILE, la première solution bancaire 100 % sans internet en Centrafrique. Composez #808# depuis n'importe quel téléphone.",
-    image: "/images/actualites/fica-mobile-lancement.jpg",
+    image: "/images/actualites/equipe-fica-mobile.jpg",
     corps: [
       "La Financière de Centrafrique innove et rapproche ses services de sa clientèle avec le lancement officiel de FICA MOBILE.",
       "Pour la première fois en Centrafrique, une banque met à disposition une solution 100 % sans internet. Il suffit de souscrire puis de composer le #808# depuis n'importe quel téléphone.",
@@ -175,7 +168,7 @@ export const actualites: Actualite[] = [
       "Avec ce service USSD, la FICA réaffirme son engagement : rendre la banque accessible, rapide et disponible pour tous, partout en RCA, sans contrainte de connexion.",
       "Pour en profiter, souscrivez et composez dès maintenant le #808#.",
     ],
-    photos: ["/images/actualites/equipe-fica-mobile.jpg", "/images/actualites/guichet-fica-mobile.jpg"],
+    photos: ["/images/actualites/fica-mobile-lancement.jpg", "/images/actualites/guichet-fica-mobile.jpg"],
   },
   {
     slug: "defile-du-1er-mai-2026",

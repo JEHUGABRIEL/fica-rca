@@ -12,7 +12,7 @@ export default function PageMentionsLegales() {
   return (
     <>
       <BandeauPage titre="Mentions légales" miettes={[{ libelle: "Mentions légales" }]} />
-      <div className="conteneur prose-fica max-w-3xl py-16 md:py-20">
+      <div className="conteneur texte-courant max-w-3xl py-16 md:py-20">
         <h2>Éditeur du site</h2>
         <p>
           {site.nom} ({site.nomCourt}), société anonyme au capital de {site.capitalSocial}.

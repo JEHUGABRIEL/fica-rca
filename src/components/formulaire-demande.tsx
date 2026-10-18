@@ -24,9 +24,9 @@ export function FormulaireDemande({
 
   if (etat.statut === "succes") {
     return (
-      <div role="status" className="rounded-2xl border border-vert/30 bg-vert-clair p-8 text-center">
-        <CircleCheck className="mx-auto size-12 text-vert" aria-hidden />
-        <h3 className="mt-4 text-xl font-bold">Demande bien reçue</h3>
+      <div role="status" className="border-l-4 border-vert bg-white p-6">
+        <CircleCheck className="size-8 text-vert" aria-hidden />
+        <h3 className="mt-3 text-lg">Demande bien reçue</h3>
         <p className="mt-2 text-gris">Merci. Un conseiller de la FICA vous recontacte dans les meilleurs délais.</p>
       </div>
     );
@@ -53,7 +53,7 @@ export function FormulaireDemande({
       {nature === "ouverture" && (
         <>
           <div>
-            <label htmlFor="profil" className="mb-1.5 block text-sm font-semibold text-marine">
+            <label htmlFor="profil" className="mb-1.5 block text-sm font-medium text-marine">
               Vous êtes
             </label>
             <select id="profil" name="profil" className="champ" defaultValue={profilInitial}>
@@ -62,7 +62,7 @@ export function FormulaireDemande({
             </select>
           </div>
           <div>
-            <label htmlFor="compte" className="mb-1.5 block text-sm font-semibold text-marine">
+            <label htmlFor="compte" className="mb-1.5 block text-sm font-medium text-marine">
               Compte souhaité
             </label>
             <select id="compte" name="compte" className="champ" defaultValue={compteChoisi?.libelle ?? ""}>
@@ -84,7 +84,7 @@ export function FormulaireDemande({
       )}
 
       <div className="sm:col-span-2">
-        <label htmlFor="nom" className="mb-1.5 block text-sm font-semibold text-marine">
+        <label htmlFor="nom" className="mb-1.5 block text-sm font-medium text-marine">
           Nom complet ou raison sociale <span className="text-rouge">*</span>
         </label>
         <input
@@ -99,7 +99,7 @@ export function FormulaireDemande({
         {erreur("nom")}
       </div>
       <div>
-        <label htmlFor="telephone" className="mb-1.5 block text-sm font-semibold text-marine">
+        <label htmlFor="telephone" className="mb-1.5 block text-sm font-medium text-marine">
           Téléphone <span className="text-rouge">*</span>
         </label>
         <input
@@ -116,7 +116,7 @@ export function FormulaireDemande({
         {erreur("telephone")}
       </div>
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-marine">
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-marine">
           E-mail
         </label>
         <input
@@ -132,14 +132,14 @@ export function FormulaireDemande({
       </div>
       {nature === "contact" && (
         <div className="sm:col-span-2">
-          <label htmlFor="objet" className="mb-1.5 block text-sm font-semibold text-marine">
+          <label htmlFor="objet" className="mb-1.5 block text-sm font-medium text-marine">
             Objet
           </label>
           <input id="objet" name="objet" defaultValue={objetInitial} className="champ" />
         </div>
       )}
       <div className="sm:col-span-2">
-        <label htmlFor="message" className="mb-1.5 block text-sm font-semibold text-marine">
+        <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-marine">
           {nature === "contact" ? (
             <>
               Votre message <span className="text-rouge">*</span>
@@ -160,7 +160,7 @@ export function FormulaireDemande({
       </div>
 
       {etat.statut === "erreur" && etat.message && (
-        <p role="alert" className="rounded-lg bg-rouge/5 px-4 py-3 text-sm text-rouge sm:col-span-2">
+        <p role="alert" className="border-l-4 border-rouge bg-rouge/5 px-4 py-3 text-sm text-rouge sm:col-span-2">
           {etat.message}
         </p>
       )}

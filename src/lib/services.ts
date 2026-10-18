@@ -7,14 +7,6 @@
    ligne (liste dans CONTENU-A-VALIDER.md). Aucun taux ni montant n'y a été
    ajouté. */
 
-export type CleIcone =
-  | "portefeuille"
-  | "credit"
-  | "signature"
-  | "paiement"
-  | "attestation"
-  | "services";
-
 export type Produit = {
   slug: string;
   nom: string;
@@ -38,7 +30,6 @@ export type Univers = {
   slug: string;
   nom: string;
   nomCourt: string;
-  icone: CleIcone;
   accroche: string;
   introduction: string;
   produits: Produit[];
@@ -91,8 +82,7 @@ export const univers: Univers[] = [
     slug: "comptes",
     nom: "Comptes courants et épargne",
     nomCourt: "Comptes",
-    icone: "portefeuille",
-    accroche: "Un compte adapté à chaque profil : salariés, entrepreneurs, entreprises, associations et enfants.",
+    accroche: "Comptes courants et d'épargne pour les particuliers, les entreprises et les associations.",
     introduction:
       "Nos comptes courants constituent une base solide pour gérer vos opérations du quotidien, épargner pour l'avenir ou solliciter un crédit pour vos projets. Ils sont particulièrement adaptés aux indépendants, aux petits commerçants et aux associations.",
     anciensSlugs: ["category/compte-fica", "comptes-courant-2", "compte-depargne", "demande-douverture-de-compte"],
@@ -118,7 +108,7 @@ export const univers: Univers[] = [
         slug: "compte-epargne-ordinaire",
         nom: "Compte épargne ordinaire",
         groupe: "Épargne",
-        accroche: "Mettez de côté pour les imprévus et vos projets, et faites fructifier votre argent.",
+        accroche: "Un compte rémunéré pour constituer une épargne de précaution ou de projet.",
         description: [
           "Le compte épargne vous permet de placer l'argent dont vous n'avez pas besoin immédiatement et de percevoir des intérêts. Il est recommandé aux travailleurs indépendants, aux étudiants et aux petites entreprises.",
         ],
@@ -138,7 +128,7 @@ export const univers: Univers[] = [
         slug: "compte-epargne-junior",
         nom: "Compte épargne Junior",
         groupe: "Épargne",
-        accroche: "Préparez dès aujourd'hui l'avenir de vos enfants de moins de 18 ans.",
+        accroche: "Le compte d'épargne ouvert au nom d'un enfant de moins de 18 ans.",
         description: [
           "Le compte épargne Junior est ouvert au nom de l'enfant et géré par son parent. Une excellente manière de constituer progressivement une épargne pour ses études et ses projets.",
         ],
@@ -177,7 +167,7 @@ export const univers: Univers[] = [
         slug: "compte-entreprise-individuelle",
         nom: "Compte Entreprise individuelle",
         groupe: "Entreprises et associations",
-        accroche: "Séparez vos finances professionnelles et personnelles.",
+        accroche: "Le compte courant des entrepreneurs individuels.",
         description: [
           "Le compte courant Entreprise individuelle porte les achats, retraits, dépôts et moyens de paiement de votre activité. Il peut être alternativement créditeur et débiteur.",
           conseiller,
@@ -216,8 +206,7 @@ export const univers: Univers[] = [
     slug: "credits",
     nom: "Crédits",
     nomCourt: "Crédits",
-    icone: "credit",
-    accroche: "Des financements pour vos besoins personnels, vos projets professionnels et la croissance de votre entreprise.",
+    accroche: "Découverts, crédits amortissables et financements destinés aux particuliers et aux entreprises.",
     introduction:
       "Découvert ponctuel ou permanent, crédits amortissables, financement de marchés : la FICA étudie chaque demande au plus près de votre situation et vous propose un remboursement adapté à vos revenus.",
     anciensSlugs: ["category/credit-fica", "autres-credits-amortissables"],
@@ -238,7 +227,7 @@ export const univers: Univers[] = [
         slug: "decouvert-permanent",
         nom: "Découvert permanent",
         groupe: "Découverts",
-        accroche: "Une réserve de trésorerie sur une durée plus longue pour dynamiser votre activité.",
+        accroche: "Une facilité de trésorerie accordée pour une durée déterminée.",
         description: [
           "Le découvert permanent est mis à votre disposition pour une durée déterminée et plus longue. Il permet à nos clients de soutenir et redynamiser leurs activités.",
         ],
@@ -289,7 +278,7 @@ export const univers: Univers[] = [
         slug: "credit-scolaire",
         nom: "Crédit scolaire",
         groupe: "Crédits amortissables",
-        accroche: "Abordez la rentrée sereinement : inscriptions, écolage, fournitures, uniformes.",
+        accroche: "Le financement des frais de rentrée : inscription, écolage, fournitures, uniformes.",
         description: [
           "Le crédit scolaire est un prêt qui vous aide à faire face aux dépenses de la rentrée : frais d'inscription et d'écolage, fournitures, uniformes. La FICA vous accompagne tout au long de cette période.",
         ],
@@ -301,7 +290,7 @@ export const univers: Univers[] = [
         slug: "credit-evenementiel",
         nom: "Crédit événementiel",
         groupe: "Crédits amortissables",
-        accroche: "Crédit Arbre de Noël et crédit Tabaski : préparez les fêtes en toute tranquillité.",
+        accroche: "Crédit Arbre de Noël et crédit Tabaski.",
         description: [
           "Pour les grands moments de l'année, la FICA propose deux formules : le crédit Arbre de Noël pour les fêtes de fin d'année et le crédit Tabaski.",
         ],
@@ -337,7 +326,7 @@ export const univers: Univers[] = [
         slug: "credit-aux-pme",
         nom: "Crédit aux PME",
         groupe: "Entreprises",
-        accroche: "Fonds de roulement, équipement, développement : un partenaire pour les PME centrafricaines.",
+        accroche: "Financement du fonds de roulement, des équipements et du développement des PME.",
         description: [
           "La FICA accompagne les petites et moyennes entreprises dans le financement de leur fonds de roulement, de leurs équipements et de leurs projets de développement.",
         ],
@@ -351,8 +340,7 @@ export const univers: Univers[] = [
     slug: "engagements-par-signature",
     nom: "Engagements par signature",
     nomCourt: "Engagements",
-    icone: "signature",
-    accroche: "Escomptes, cautions et avals : la signature de la FICA au service de vos affaires.",
+    accroche: "Escompte de chèques et de traites, cautions et avals.",
     introduction:
       "Par un engagement par signature, la FICA garantit ou mobilise des créances pour le compte de ses clients. Ces solutions soutiennent votre trésorerie et votre crédibilité auprès de vos partenaires et des administrations.",
     anciensSlugs: [],
@@ -382,7 +370,7 @@ export const univers: Univers[] = [
       {
         slug: "cautions-et-avals",
         nom: "Cautions et avals",
-        accroche: "La FICA s'engage pour vous auprès de vos partenaires.",
+        accroche: "Garanties émises par la FICA en faveur d'un tiers pour le compte de ses clients.",
         description: [
           "La caution bancaire est un engagement par signature que la FICA prend pour le compte de son client en faveur d'un tiers.",
         ],
@@ -401,8 +389,7 @@ export const univers: Univers[] = [
     slug: "paiements",
     nom: "Paiements",
     nomCourt: "Paiements",
-    icone: "paiement",
-    accroche: "Pensions, allocations familiales et paiement des salaires sur site, selon un calendrier connu à l'avance.",
+    accroche: "Paiement des pensions, des allocations familiales et des salaires sur site.",
     introduction:
       "En partenariat avec les institutions publiques et la Caisse nationale de sécurité sociale (CNSS), la FICA assure le paiement de prestations sociales et de salaires selon un calendrier établi et communiqué à l'avance aux bénéficiaires.",
     anciensSlugs: ["category/paiement-fifia"],
@@ -410,7 +397,7 @@ export const univers: Univers[] = [
       {
         slug: "pension-des-retraites",
         nom: "Pension des retraités",
-        accroche: "Percevez votre pension en toute sécurité.",
+        accroche: "Le paiement des pensions de retraite selon un calendrier communiqué à l'avance.",
         description: [
           "La FICA assure le paiement des pensions de retraite selon un calendrier établi et communiqué à l'avance aux bénéficiaires.",
           "Renseignez-vous en ligne ou en agence : un conseiller vous accompagne dans vos démarches.",
@@ -431,7 +418,7 @@ export const univers: Univers[] = [
       {
         slug: "paiement-sur-site",
         nom: "Paiement sur site",
-        accroche: "Nous installons un guichet chez vous pour payer vos employés.",
+        accroche: "Un guichet installé sur le site de l'employeur pour le paiement des salaires.",
         description: [
           "Pour les entreprises, la FICA installe un guichet mobile sur les sites convenus afin d'effectuer directement le paiement des employés.",
         ],
@@ -455,8 +442,7 @@ export const univers: Univers[] = [
     slug: "attestations",
     nom: "Attestations et documents bancaires",
     nomCourt: "Attestations",
-    icone: "attestation",
-    accroche: "Marchés publics, visa, fiscalité : obtenez rapidement les documents dont vous avez besoin.",
+    accroche: "Attestations bancaires pour les marchés publics, les démarches fiscales et les demandes de visa.",
     introduction:
       "La FICA vous délivre les attestations bancaires exigées pour vos démarches administratives, vos candidatures aux marchés publics ou vos demandes de visa. Faites votre demande en ligne ou en agence.",
     anciensSlugs: ["category/attestation"],
@@ -475,7 +461,7 @@ export const univers: Univers[] = [
       {
         slug: "attestation-de-solde",
         nom: "Attestation de solde",
-        accroche: "Prouvez le remboursement intégral de votre crédit.",
+        accroche: "Le justificatif du remboursement intégral d'un crédit.",
         description: [
           "Vous avez remboursé l'intégralité de votre crédit ? Demandez une attestation de solde pour justifier de ce remboursement.",
         ],
@@ -486,7 +472,7 @@ export const univers: Univers[] = [
       {
         slug: "attestation-administration-fiscale",
         nom: "Attestation d'administration fiscale",
-        accroche: "Prouvez que votre entreprise est à jour de ses obligations fiscales.",
+        accroche: "Le justificatif de la situation fiscale d'une entreprise, exigé pour les marchés publics.",
         description: [
           "Pour candidater à un marché public, une entreprise doit prouver qu'elle est à jour de ses obligations fiscales. La FICA vous accompagne dans l'obtention de ce document.",
         ],
@@ -547,7 +533,7 @@ export const univers: Univers[] = [
       {
         slug: "attestation-de-capacite-financiere",
         nom: "Attestation de capacité financière",
-        accroche: "La FICA confirme votre crédibilité financière auprès des tiers.",
+        accroche: "L'attestation des ressources financières d'un client, exigée pour les marchés.",
         description: [
           "L'attestation de capacité financière atteste auprès d'un tiers qu'une personne physique ou morale dispose de ressources financières suffisantes. Elle est déterminante pour les entreprises qui candidatent aux marchés publics et privés.",
         ],
@@ -570,7 +556,6 @@ export const univers: Univers[] = [
     slug: "services-au-quotidien",
     nom: "Services au quotidien",
     nomCourt: "Services",
-    icone: "services",
     accroche: "FICA MOBILE, transferts, change, virements, SMS Banking et assurance.",
     introduction:
       "Au-delà du compte, la FICA met à votre disposition des services pratiques pour suivre, envoyer et recevoir votre argent, en Centrafrique comme à l'international.",
@@ -579,7 +564,7 @@ export const univers: Univers[] = [
       {
         slug: "fica-mobile",
         nom: "FICA MOBILE",
-        accroche: "Votre compte depuis n'importe quel téléphone, sans internet : composez #808#.",
+        accroche: "L'accès au compte depuis n'importe quel téléphone, sans internet, au #808#.",
         description: [
           "Consultez votre solde, retracez vos dernières opérations, transférez de compte à compte et envoyez vers Orange Money, sans connexion internet.",
         ],
@@ -590,7 +575,7 @@ export const univers: Univers[] = [
       {
         slug: "sms-banking",
         nom: "SMS Banking",
-        accroche: "Soyez informé de chaque opération, quel que soit votre opérateur.",
+        accroche: "Une notification par SMS pour chaque opération, quel que soit l'opérateur.",
         description: [
           "Le SMS Banking vous informe de vos opérations bancaires où que vous soyez, quel que soit votre opérateur de téléphonie mobile, et réduit le risque de fraude.",
         ],
@@ -646,7 +631,7 @@ export const univers: Univers[] = [
       {
         slug: "collecte-de-depots",
         nom: "Collecte de dépôts",
-        accroche: "Nous venons chercher vos fonds, votre compte est crédité aussitôt.",
+        accroche: "Le ramassage des fonds chez le client, avec crédit immédiat du compte.",
         description: [
           "Nos équipes se rendent chez vous pour collecter vos valeurs (espèces ou chèques) contre décharge. Votre compte est aussitôt crédité dans nos livres. Cette prestation s'effectue dans le cadre d'un contrat.",
         ],

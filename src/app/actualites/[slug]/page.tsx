@@ -1,10 +1,8 @@
-import { ArrowLeft, Check } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BandeauPage } from "@/components/blocs";
-import { CarteActualite } from "@/components/carte-actualite";
+import { FilAriane } from "@/components/blocs";
 import { actualites, formaterDate } from "@/lib/institution";
 
 export function generateStaticParams() {
@@ -27,31 +25,30 @@ export default async function PageActualite({ params }: PageProps<"/actualites/[
   const { slug } = await params;
   const a = actualites.find((x) => x.slug === slug);
   if (!a) notFound();
-  const autres = actualites.filter((x) => x.slug !== a.slug).slice(0, 2);
+  const autres = actualites.filter((x) => x.slug !== a.slug).slice(0, 3);
 
   return (
     <>
-      <BandeauPage
-        surtitre={`${a.categorie} · ${formaterDate(a.date)}`}
-        titre={a.titre}
-        miettes={[{ libelle: "Actualités", href: "/actualites" }, { libelle: a.categorie }]}
-      />
-      <article className="conteneur max-w-4xl py-14 md:py-20">
-        <div className="relative aspect-[2/1] overflow-hidden rounded-2xl bg-gris-clair">
-          <Image src={a.image} alt="" fill priority sizes="(min-width: 896px) 896px, 100vw" className="object-cover" />
+      <article className="conteneur max-w-3xl py-10 md:py-14">
+        <FilAriane miettes={[{ libelle: "Actualités", href: "/actualites" }, { libelle: a.titre }]} />
+        <p className="mt-10 text-sm text-gris">
+          {a.categorie} · <time dateTime={a.date}>{formaterDate(a.date)}</time>
+        </p>
+        <h1 className="mt-3 text-3xl md:text-[2.4rem]">{a.titre}</h1>
+        <p className="mt-5 text-xl leading-relaxed text-gris">{a.resume}</p>
+
+        <div className="relative mt-10 aspect-[2/1] overflow-hidden bg-gris-clair">
+          <Image src={a.image} alt="" fill priority sizes="(min-width: 768px) 48rem, 100vw" className="object-cover" />
         </div>
-        <div className="prose-fica mx-auto mt-12 max-w-2xl">
-          <p className="text-xl leading-relaxed text-marine">{a.resume}</p>
+
+        <div className="texte-courant mt-10">
           {a.corps.map((p) => (
             <p key={p}>{p}</p>
           ))}
           {a.liste && (
-            <ul className="space-y-3 rounded-2xl bg-gris-clair p-6">
+            <ul className="list-disc space-y-1.5 pl-6 marker:text-bleu">
               {a.liste.map((l) => (
-                <li key={l} className="flex gap-3">
-                  <Check className="mt-1 size-5 shrink-0 text-vert" aria-hidden />
-                  {l}
-                </li>
+                <li key={l}>{l}</li>
               ))}
             </ul>
           )}
@@ -59,29 +56,32 @@ export default async function PageActualite({ params }: PageProps<"/actualites/[
             <p key={p}>{p}</p>
           ))}
         </div>
+
         {a.photos && (
-          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {a.photos.map((src) => (
-              <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gris-clair">
-                <Image src={src} alt={a.titre} fill sizes="(min-width: 640px) 448px, 100vw" className="object-cover" />
+              <div key={src} className="relative aspect-[4/3] overflow-hidden bg-gris-clair">
+                <Image src={src} alt={a.titre} fill sizes="(min-width: 640px) 24rem, 100vw" className="object-cover" />
               </div>
             ))}
           </div>
         )}
-        <Link href="/actualites" className="mt-12 inline-flex items-center gap-2 font-semibold text-bleu">
-          <ArrowLeft className="size-4" aria-hidden />
-          Toutes les actualités
-        </Link>
       </article>
+
       {autres.length > 0 && (
-        <section className="bg-gris-clair">
-          <div className="conteneur py-16">
-            <h2 className="text-2xl font-bold">À lire aussi</h2>
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:max-w-4xl">
+        <section className="border-t border-filet">
+          <div className="conteneur max-w-3xl py-12">
+            <h2 className="text-xl">Autres actualités</h2>
+            <ul className="mt-4 border-t border-marine">
               {autres.map((x) => (
-                <CarteActualite key={x.slug} actualite={x} />
+                <li key={x.slug} className="border-b border-filet">
+                  <Link href={`/actualites/${x.slug}`} className="group block py-4">
+                    <span className="text-sm text-gris">{formaterDate(x.date)}</span>
+                    <span className="block font-semibold text-marine group-hover:text-bleu group-hover:underline">{x.titre}</span>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       )}

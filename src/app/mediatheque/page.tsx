@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppelAction, BandeauPage } from "@/components/blocs";
+import { BandeauPage } from "@/components/blocs";
 import { GaleriePhotos } from "@/components/galerie-photos";
 import { galerie } from "@/lib/institution";
 
@@ -14,13 +14,12 @@ export default function PageMediatheque() {
     <>
       <BandeauPage
         titre="Médiathèque"
-        introduction="Nos équipes, notre agence et les temps forts de la FICA en images."
+        introduction="Les équipes et l'agence de la FICA, et les temps forts de l'année."
         miettes={[{ libelle: "Médiathèque" }]}
       />
       <div className="conteneur py-16 md:py-20">
         <GaleriePhotos photos={galerie} />
       </div>
-      <AppelAction />
     </>
   );
 }

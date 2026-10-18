@@ -1,45 +1,34 @@
 @import "tailwindcss";
 
 /* ====================================================================
-   FICA — système de design
-   Palette tirée du logo officiel : bleu FICA, vert de l'arbre, rouge du
-   cadre. Le bleu porte l'identité, le rouge est réservé aux appels à
-   l'action, le vert aux signaux de confiance (sécurité, validation).
+   FICA — système de design institutionnel
+   Registre bancaire : angles nets, filets plutôt qu'ombres, une seule
+   famille typographique (IBM Plex Sans), couleurs du logo utilisées avec
+   retenue. Le rouge est réservé à l'action principale.
    ==================================================================== */
 
 @theme {
-  /* --- Palette FICA --------------------------------------------------- */
-  --color-marine: #0a1b3f; /* bleu nuit — fonds sombres, titres */
-  --color-marine-clair: #13295c;
-  --color-bleu: #1d3f94; /* bleu du logo */
-  --color-bleu-vif: #2b59c3;
-  --color-ciel: #eaf0fb; /* fond bleuté des sections alternées */
-  --color-rouge: #c8102e; /* rouge du cadre — appels à l'action */
+  --color-marine: #0b2149; /* bleu institutionnel — titres, pied de page */
+  --color-bleu: #1d3f94; /* bleu du logo — liens, accents */
+  --color-bleu-fonce: #142f73;
+  --color-rouge: #c8102e; /* rouge du cadre — action principale */
   --color-rouge-fonce: #a30d25;
-  --color-vert: #1f7a4d; /* vert de l'arbre — confiance */
-  --color-vert-clair: #e7f4ec;
-  --color-or: #c9a227; /* touches discrètes (compte Or, distinctions) */
+  --color-vert: #1f7a4d; /* vert de l'arbre — validations */
 
-  /* --- Neutres --------------------------------------------------------- */
-  --color-encre: #142033; /* texte courant */
-  --color-gris: #5b6678; /* texte secondaire */
-  --color-gris-clair: #f5f7fa; /* fond de page alterné */
-  --color-bordure: #e2e7ef;
+  --color-encre: #1b2433;
+  --color-gris: #566173;
+  --color-gris-clair: #f4f5f7;
+  --color-filet: #dfe3ea;
 
-  /* --- Typographie ----------------------------------------------------- */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-titre: var(--font-manrope), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-carte: 0 1px 2px rgb(10 27 63 / 0.04), 0 8px 24px -12px rgb(10 27 63 / 0.18);
-  --shadow-carte-survol: 0 2px 4px rgb(10 27 63 / 0.06), 0 18px 40px -16px rgb(10 27 63 / 0.28);
-
-  --ease-douce: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-sm: 2px;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 8rem;
   }
 
   body {
@@ -47,24 +36,18 @@
     color: var(--color-encre);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-family: var(--font-titre);
     color: var(--color-marine);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
@@ -73,16 +56,15 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-bleu-vif);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline: 2px solid var(--color-bleu);
+    outline-offset: 2px;
   }
 }
 
 @layer components {
   .conteneur {
     width: 100%;
-    max-width: 80rem;
+    max-width: 76rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
@@ -92,42 +74,17 @@
     }
   }
 
-  /* Petit libellé au-dessus des titres de section. */
-  .surtitre {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-bleu);
-  }
-  .surtitre::before {
-    content: "";
-    width: 1.5rem;
-    height: 2px;
-    background: var(--color-rouge);
-  }
-
   .bouton {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 0.625rem;
-    padding: 0.8rem 1.35rem;
-    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1.4rem;
+    font-weight: 500;
     font-size: 0.95rem;
     line-height: 1.2;
-    transition:
-      background-color 200ms var(--ease-douce),
-      color 200ms var(--ease-douce),
-      border-color 200ms var(--ease-douce),
-      transform 200ms var(--ease-douce);
-  }
-  .bouton:active {
-    transform: translateY(1px);
+    transition: background-color 150ms, color 150ms, border-color 150ms;
   }
   .bouton-principal {
     background: var(--color-rouge);
@@ -136,86 +93,67 @@
   .bouton-principal:hover {
     background: var(--color-rouge-fonce);
   }
-  .bouton-bleu {
-    background: var(--color-bleu);
-    color: #fff;
-  }
-  .bouton-bleu:hover {
-    background: var(--color-marine-clair);
-  }
-  .bouton-contour {
-    border: 1px solid var(--color-bordure);
+  .bouton-secondaire {
+    border: 1px solid var(--color-marine);
     color: var(--color-marine);
-    background: #fff;
   }
-  .bouton-contour:hover {
-    border-color: var(--color-bleu);
-    color: var(--color-bleu);
-  }
-  .bouton-clair {
-    border: 1px solid rgb(255 255 255 / 0.3);
+  .bouton-secondaire:hover {
+    background: var(--color-marine);
     color: #fff;
   }
-  .bouton-clair:hover {
-    background: rgb(255 255 255 / 0.1);
-    border-color: rgb(255 255 255 / 0.6);
+  .bouton-blanc {
+    border: 1px solid #fff;
+    color: #fff;
   }
-
-  .carte {
+  .bouton-blanc:hover {
     background: #fff;
-    border: 1px solid var(--color-bordure);
-    border-radius: 1rem;
-    box-shadow: var(--shadow-carte);
-    transition:
-      box-shadow 250ms var(--ease-douce),
-      transform 250ms var(--ease-douce),
-      border-color 250ms var(--ease-douce);
-  }
-  a.carte:hover,
-  .carte-interactive:hover {
-    box-shadow: var(--shadow-carte-survol);
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--color-bleu) 25%, var(--color-bordure));
+    color: var(--color-marine);
   }
 
-  /* Texte éditorial (pages institutionnelles, actualités). */
-  .prose-fica > * + * {
-    margin-top: 1.1em;
+  /* Lien d'action souligné, à la manière des sites bancaires. */
+  .lien-fleche {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    color: var(--color-bleu);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-bleu) 35%, transparent);
+    text-underline-offset: 4px;
   }
-  .prose-fica {
-    color: var(--color-encre);
+  .lien-fleche:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .texte-courant > * + * {
+    margin-top: 1em;
+  }
+  .texte-courant {
     font-size: 1.0625rem;
     line-height: 1.75;
   }
-  .prose-fica h2 {
-    font-size: 1.5rem;
+  .texte-courant h2 {
+    font-size: 1.375rem;
     margin-top: 2em;
   }
 
   .champ {
     width: 100%;
-    border: 1px solid var(--color-bordure);
-    border-radius: 0.625rem;
+    border: 1px solid #b9c1cd;
+    border-radius: var(--radius-sm);
     background: #fff;
-    padding: 0.75rem 0.9rem;
+    padding: 0.7rem 0.85rem;
     font-size: 0.95rem;
-    transition: border-color 150ms, box-shadow 150ms;
   }
   .champ:focus {
-    outline: none;
-    border-color: var(--color-bleu);
-    box-shadow: 0 0 0 3px rgb(29 63 148 / 0.15);
+    outline: 2px solid var(--color-bleu);
+    outline-offset: -1px;
+    border-color: transparent;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
   }
 }

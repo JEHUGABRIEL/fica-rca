@@ -25,7 +25,6 @@ la mise en ligne.
 
 ## 2. Textes institutionnels rédigés pendant la refonte (`src/lib/institution.ts`)
 
-- **Une phrase d'explication sous chaque valeur.** L'ancien site ne donnait que les six intitulés.
 - **Nos engagements** (éthique, responsabilité, proximité). Ces textes s'appuient sur le mot du DG
   et sur la page Opérations de change. Les pages Éthique et Responsabilité de l'ancien site étaient vides.
 - **Notre histoire.** Trois jalons ont été vérifiés : l'agrément COBAC du 20/07/2020, le lancement de FICA
