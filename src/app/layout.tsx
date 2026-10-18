@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
+import { BoutonsFlottants } from "@/components/boutons-flottants";
 import { EnTete } from "@/components/en-tete";
 import { PiedDePage } from "@/components/pied-de-page";
 import { site } from "@/lib/site";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <PiedDePage />
+        <BoutonsFlottants />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees) }}

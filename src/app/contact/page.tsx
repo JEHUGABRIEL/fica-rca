@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BandeauPage } from "@/components/blocs";
 import { FormulaireDemande } from "@/components/formulaire-demande";
+import { IconesSociales } from "@/components/icones-sociales";
 import { adresseComplete, site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -57,6 +58,10 @@ export default function PageContact() {
               <br />
               {site.adresse.pays}
             </address>
+          </section>
+          <section>
+            <h2 className="text-xl">Nous suivre</h2>
+            <IconesSociales className="mt-4 border-t border-marine pt-4" />
           </section>
         </div>
 

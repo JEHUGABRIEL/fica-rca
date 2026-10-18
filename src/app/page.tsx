@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { AvisClients } from "@/components/avis-clients";
 import { BandeauContact } from "@/components/blocs";
 import { GrillePartenaires } from "@/components/partenaires";
 import { actualites, formaterDate, motDuDirecteur } from "@/lib/institution";
@@ -220,6 +221,8 @@ export default function Accueil() {
           </div>
         </div>
       </section>
+
+      <AvisClients />
 
       {/* --- Partenaires --- */}
       <section className="border-t border-filet">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AnneeCourante } from "@/components/annee-courante";
+import { IconesSociales } from "@/components/icones-sociales";
 import { Logo } from "@/components/logo";
 import { profils } from "@/lib/profils";
 import { site } from "@/lib/site";
@@ -31,6 +32,7 @@ export function PiedDePage() {
         <div>
           <Logo clair />
           <p className="mt-5 max-w-xs leading-relaxed">{site.slogan}.</p>
+          <IconesSociales clair className="mt-6" />
         </div>
         {colonnes.map((c) => (
           <div key={c.titre}>
@@ -60,14 +62,6 @@ export function PiedDePage() {
             <br />
             <a href={`mailto:${site.email}`} className="hover:text-white hover:underline">
               {site.email}
-            </a>
-          </p>
-          <p className="mt-4 flex gap-4">
-            <a href={site.reseaux.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
-              Facebook
-            </a>
-            <a href={site.reseaux.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
-              LinkedIn
             </a>
           </p>
         </div>
