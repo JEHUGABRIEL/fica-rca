@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { CarteAvis } from "@/components/avis-clients";
+import { CarteAvis, NoteExemples } from "@/components/avis-clients";
 import { BandeauPage } from "@/components/blocs";
 import { FormulaireAvis } from "@/components/formulaire-avis";
-import { avisPublies } from "@/lib/avis";
+import { avisExemples, avisPublies } from "@/lib/avis";
 
 export const metadata: Metadata = {
   title: "Avis clients",
@@ -26,17 +26,18 @@ export default async function PageAvis() {
           <h2 id="titre-liste-avis" className="text-2xl">
             {avis.length > 0 ? `${avis.length} avis publié${avis.length > 1 ? "s" : ""}` : "Aucun avis publié pour le moment"}
           </h2>
-          {avis.length > 0 ? (
-            <ul className="mt-6 border-t border-marine">
-              {avis.map((a) => (
-                <li key={a.id} className="border-b border-filet py-7">
-                  <CarteAvis avis={a} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-4 text-lg text-gris">Soyez le premier à partager votre expérience avec la FICA.</p>
+          {avis.length === 0 && (
+            <div className="mt-4">
+              <NoteExemples />
+            </div>
           )}
+          <ul className="mt-6 border-t border-marine">
+            {(avis.length > 0 ? avis : avisExemples).map((a) => (
+              <li key={a.id} className="border-b border-filet py-7">
+                <CarteAvis avis={a} />
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section id="donner-mon-avis" aria-labelledby="titre-donner-avis" className="self-start border-t-4 border-marine bg-gris-clair p-6 md:p-8 lg:sticky lg:top-36">

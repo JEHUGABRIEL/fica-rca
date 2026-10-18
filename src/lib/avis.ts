@@ -15,7 +15,46 @@ export type AvisPublie = {
   produit: string;
   texte: string;
   date: string;
+  /** Avis d'exemple, affiché tant qu'aucun vrai avis n'est publié. */
+  exemple?: boolean;
 };
+
+/* Avis d'EXEMPLE, signalés comme tels sur le site. Ils n'apparaissent que
+   tant qu'aucun avis réel n'est publié, et disparaissent dès la première
+   publication dans le back-office. Profils génériques (pas de noms de
+   personnes) et aucun chiffre ni engagement que la FICA n'aurait pas pris. */
+export const avisExemples: AvisPublie[] = [
+  {
+    id: -1,
+    nom: "Cliente particulière",
+    profil: "Commerçante, Bangui",
+    produit: "FICA MOBILE",
+    texte:
+      "Je consulte mon solde et j'envoie de l'argent vers Orange Money depuis mon téléphone, même sans connexion internet. C'est pratique quand je suis au marché.",
+    date: "",
+    exemple: true,
+  },
+  {
+    id: -2,
+    nom: "Client professionnel",
+    profil: "Gérant d'une PME",
+    produit: "Attestation",
+    texte:
+      "Pour un appel d'offres, j'avais besoin d'une attestation de capacité financière. Le conseiller m'a aidé à constituer le dossier et le document était prêt dans les temps.",
+    date: "",
+    exemple: true,
+  },
+  {
+    id: -3,
+    nom: "Client retraité",
+    profil: "Retraité",
+    produit: "Paiement de pension",
+    texte:
+      "Le calendrier de paiement est communiqué à l'avance et l'accueil à l'agence est attentionné. Je sais quand venir et je suis bien reçu.",
+    date: "",
+    exemple: true,
+  },
+];
 
 /** Avis publiés, du plus récent au plus ancien. Mis en cache dans la page
     statique ; le cache est vidé à chaque modération (tag `avis`). */
